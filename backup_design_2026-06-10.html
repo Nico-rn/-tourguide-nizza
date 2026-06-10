@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jörg Daiber – Guide Conférencier | Nizza & Côte d'Azur</title>
+<meta name="description" content="Jörg Daiber – lizenzierter Guide Conférencier in Nizza. Führungen an der Côte d'Azur und in der Provence auf Deutsch, Englisch und Französisch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azur: #0077be;          /* Azurblau des Mittelmeers */
+    --azur-light: #4fb3e8;
+    --azur-deep: #023e63;     /* tiefes Meerblau */
+    --sun: #f4b942;           /* Sonnengelb */
+    --coral: #e8604c;         /* Fassaden der Altstadt */
+    --white: #ffffff;
+    --cream: #fdf9f0;
+    --ink: #1d2d3a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; color: var(--ink); background: var(--cream); line-height: 1.7; }
+  .hand { font-family: 'Caveat', cursive; }
+
+  /* ---------- Header ---------- */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.7rem 5vw;
+    background: rgba(2, 62, 99, 0.55);
+    backdrop-filter: blur(10px);
+    transition: background .3s;
+  }
+  header.solid { background: rgba(2, 62, 99, 0.92); }
+  .logo { font-family: 'Caveat', cursive; font-size: 1.9rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--sun); }
+  nav { display: flex; gap: 1.6rem; align-items: center; }
+  nav a { text-decoration: none; color: var(--white); font-size: 0.9rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: .9; transition: opacity .2s; }
+  nav a:hover { opacity: 1; color: var(--sun); }
+  .lang-switch { display: flex; gap: 0.35rem; margin-left: 0.8rem; }
+  .lang-switch button {
+    border: 1px solid rgba(255,255,255,0.6); background: transparent; color: var(--white);
+    font-family: 'Jost', sans-serif; font-size: 0.78rem; padding: 0.22rem 0.55rem;
+    cursor: pointer; border-radius: 3px; transition: all .2s;
+  }
+  .lang-switch button.active, .lang-switch button:hover { background: var(--sun); border-color: var(--sun); color: var(--azur-deep); }
+  .nav-toggle { display: none; background: none; border: none; font-size: 1.7rem; color: var(--white); cursor: pointer; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; padding: 7rem 6vw 5rem; color: var(--white); position: relative;
+    background:
+      linear-gradient(rgba(2, 62, 99, 0.35), rgba(2, 62, 99, 0.55)),
+      var(--azur-deep) url('https://images.unsplash.com/photo-1491166617655-0723a0999cfc?auto=format&fit=crop&w=1800&q=80') center/cover no-repeat;
+  }
+  .hero .hand-intro { font-family: 'Caveat', cursive; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--sun); transform: rotate(-2deg); }
+  .hero h1 { font-size: clamp(2.6rem, 7vw, 5rem); font-weight: 600; letter-spacing: 0.02em; margin: 0.4rem 0 1rem; text-shadow: 0 2px 18px rgba(0,0,0,0.35); }
+  .hero p.subtitle { font-weight: 300; font-size: clamp(1.05rem, 2.2vw, 1.35rem); letter-spacing: 0.06em; max-width: 620px; }
+  .hero .btn {
+    margin-top: 2.4rem; background: var(--sun); color: var(--azur-deep);
+    padding: 0.95rem 2.6rem; text-decoration: none; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.9rem;
+    border-radius: 40px; transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  }
+  .hero .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+  .hero .scroll-hint { position: absolute; bottom: 2rem; font-size: 1.6rem; opacity: .8; animation: bob 2s infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+  /* ---------- Intro / Über mich ---------- */
+  .intro { padding: 5rem 8vw 4.5rem; }
+  .about-grid {
+    display: grid; grid-template-columns: 300px 1fr; gap: 3.5rem;
+    align-items: center; max-width: 1000px; margin: 0 auto;
+  }
+  .polaroid {
+    background: var(--white); padding: 14px 14px 18px;
+    box-shadow: 0 14px 36px rgba(2, 62, 99, 0.22);
+    transform: rotate(-3deg); border-radius: 4px;
+    transition: transform .25s;
+  }
+  .polaroid:hover { transform: rotate(-1deg) scale(1.02); }
+  .polaroid img { width: 100%; aspect-ratio: 1/1.05; object-fit: cover; object-position: 35% 30%; display: block; border-radius: 2px; }
+  .polaroid figcaption { text-align: center; font-size: 1.6rem; color: var(--azur-deep); margin-top: 0.5rem; }
+  .about-text .hand-title { font-size: clamp(2.2rem, 5vw, 3rem); color: var(--azur); font-weight: 700; transform: rotate(-1.5deg); display: inline-block; }
+  .about-text p { margin-top: 1rem; font-weight: 300; font-size: 1.08rem; }
+  .badges { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.6rem; }
+  .badge {
+    background: var(--white); border: 1.5px solid var(--azur-light); color: var(--azur-deep);
+    padding: 0.35rem 1.1rem; border-radius: 30px; font-size: 0.88rem;
+  }
+  /* Ohne Foto: Text zentrieren */
+  .about-text.no-photo { grid-column: 1 / -1; text-align: center; }
+  .about-text.no-photo .badges { justify-content: center; }
+
+  /* ---------- Big image panels ---------- */
+  .panel {
+    min-height: 58vh; display: flex; align-items: flex-end;
+    background-color: var(--azur-deep); background-size: cover; background-position: center;
+    background-attachment: fixed; position: relative;
+  }
+  @media (hover: none) { .panel { background-attachment: scroll; } }
+  .panel::after { content:""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2,62,99,0.75) 0%, rgba(2,62,99,0) 55%); }
+  .panel-blue { background: linear-gradient(160deg, var(--azur-deep) 0%, var(--azur) 100%); min-height: 38vh; }
+  .panel-blue::after { display: none; }
+  .panel-content { position: relative; z-index: 2; color: var(--white); padding: 3rem 8vw 3.5rem; max-width: 720px; }
+  .panel-content .hand-label { font-family: 'Caveat', cursive; font-size: 2.2rem; color: var(--sun); transform: rotate(-2deg); display: inline-block; }
+  .panel-content h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 600; margin: 0.2rem 0 0.6rem; }
+  .panel-content p { font-weight: 300; max-width: 560px; }
+
+  /* ---------- Facts band ---------- */
+  .facts { background: var(--azur); color: var(--white); padding: 4rem 8vw; }
+  .facts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 2.5rem; max-width: 1050px; margin: 0 auto; text-align: center; }
+  .fact .hand-num { font-family: 'Caveat', cursive; font-size: 3rem; font-weight: 700; color: var(--sun); line-height: 1.1; }
+  .fact p { font-weight: 300; font-size: 0.98rem; }
+
+  /* ---------- Reviews ---------- */
+  #reviews { background: var(--white); padding: 5.5rem 8vw; }
+  #reviews .hand-title { font-family: 'Caveat', cursive; font-size: clamp(2.4rem, 5vw, 3.4rem); color: var(--azur); font-weight: 700; transform: rotate(-1.5deg); display: inline-block; }
+  #reviews .head { text-align: center; }
+  #reviews .sub { font-weight: 300; max-width: 560px; margin: 0.6rem auto 2.6rem; text-align: center; }
+  .review-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.6rem; max-width: 1050px; margin: 0 auto 3rem; }
+  .review {
+    background: var(--cream); border-radius: 14px; padding: 1.7rem;
+    box-shadow: 0 6px 20px rgba(2, 62, 99, 0.08);
+  }
+  .review .stars { color: var(--sun); font-size: 1.15rem; letter-spacing: 2px; }
+  .review p.text { font-weight: 300; font-style: italic; margin: 0.6rem 0 0.8rem; }
+  .review .who { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--azur-deep); }
+  .review-form {
+    max-width: 560px; margin: 0 auto; background: var(--cream);
+    border-radius: 16px; padding: 2.2rem; box-shadow: 0 8px 26px rgba(2, 62, 99, 0.1);
+  }
+  .review-form h3 { font-family: 'Caveat', cursive; font-size: 2rem; color: var(--coral); margin-bottom: 1rem; text-align: center; transform: rotate(-1deg); }
+  .review-form label { display: block; font-size: 0.9rem; font-weight: 500; margin: 0.9rem 0 0.25rem; text-align: left; }
+  .review-form input[type="text"], .review-form textarea {
+    width: 100%; padding: 0.7rem 0.9rem; border: 1.5px solid #d8e4ec; border-radius: 8px;
+    font-family: 'Jost', sans-serif; font-size: 0.95rem; background: var(--white);
+  }
+  .review-form textarea { min-height: 110px; resize: vertical; }
+  .star-picker { display: flex; gap: 0.3rem; font-size: 1.9rem; cursor: pointer; user-select: none; }
+  .star-picker span { color: #cfd8de; transition: color .15s, transform .15s; }
+  .star-picker span.on { color: var(--sun); }
+  .star-picker span:hover { transform: scale(1.15); }
+  .review-form button {
+    margin-top: 1.4rem; width: 100%; background: var(--azur); color: var(--white);
+    border: none; padding: 0.9rem; border-radius: 40px; font-family: 'Jost', sans-serif;
+    font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    transition: background .2s;
+  }
+  .review-form button:hover { background: var(--azur-deep); }
+  .form-note { font-size: 0.82rem; font-weight: 300; margin-top: 0.8rem; text-align: center; opacity: 0.75; }
+  .thanks { display: none; text-align: center; font-family: 'Caveat', cursive; font-size: 1.7rem; color: var(--azur); margin-top: 1rem; }
+
+  /* ---------- Contact ---------- */
+  #contact { padding: 5.5rem 8vw; text-align: center; }
+  #contact .hand-title { font-family: 'Caveat', cursive; font-size: clamp(2.4rem, 5vw, 3.4rem); color: var(--coral); font-weight: 700; transform: rotate(-1.5deg); display: inline-block; }
+  #contact .sub { font-weight: 300; max-width: 560px; margin: 0.8rem auto 2.8rem; }
+  .contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.6rem; max-width: 980px; margin: 0 auto; }
+  .ccard {
+    background: var(--white); border-radius: 14px; padding: 2.2rem 1.6rem;
+    box-shadow: 0 8px 26px rgba(2, 62, 99, 0.1);
+    transition: transform .2s;
+  }
+  .ccard:hover { transform: translateY(-5px); }
+  .ccard .icon { font-size: 2.1rem; }
+  .ccard h3 { font-family: 'Caveat', cursive; font-size: 1.7rem; color: var(--azur-deep); margin: 0.5rem 0 0.3rem; }
+  .ccard a { color: var(--azur); text-decoration: none; font-weight: 500; word-break: break-word; }
+  .ccard a:hover { text-decoration: underline; }
+  .ccard p { font-weight: 300; font-size: 0.95rem; }
+
+  footer { background: var(--azur-deep); color: rgba(255,255,255,0.75); text-align: center; padding: 1.8rem 5vw; font-size: 0.85rem; font-weight: 300; }
+  footer a { color: var(--sun); text-decoration: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 780px) {
+    nav { position: fixed; top: 58px; right: 0; left: 0; flex-direction: column; align-items: center;
+      background: rgba(2,62,99,0.97); padding: 1.6rem 0; gap: 1.2rem;
+      transform: translateY(-140%); transition: transform .3s; }
+    nav.open { transform: translateY(0); }
+    .nav-toggle { display: block; }
+    .lang-switch { margin-left: 0; }
+    .panel { min-height: 48vh; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+    .polaroid { max-width: 260px; margin: 0 auto; }
+    .badges { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <a class="logo" href="#top">Jörg <span>Daiber</span></a>
+  <button class="nav-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button>
+  <nav>
+    <a href="#about" data-i18n="nav_about"></a>
+    <a href="#regions" data-i18n="nav_regions"></a>
+    <a href="#reviews" data-i18n="nav_reviews"></a>
+    <a href="#contact" data-i18n="nav_contact"></a>
+    <div class="lang-switch">
+      <button id="btn-de" onclick="setLang('de')">DE</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+      <button id="btn-fr" onclick="setLang('fr')">FR</button>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="hand-intro" data-i18n="hero_hand"></div>
+  <h1>Jörg Daiber</h1>
+  <p class="subtitle" data-i18n="hero_sub"></p>
+  <a href="#contact" class="btn" data-i18n="hero_cta"></a>
+  <div class="scroll-hint">⌄</div>
+</section>
+
+<section class="intro" id="about">
+  <div class="about-grid">
+    <figure class="polaroid" id="polaroid">
+      <img src="joerg.jpg" alt="Jörg Daiber" onerror="document.getElementById('polaroid').style.display='none'; document.getElementById('aboutGrid').classList.add('no-photo');">
+      <figcaption class="hand" data-i18n="about_caption"></figcaption>
+    </figure>
+    <div class="about-text" id="aboutGrid">
+      <span class="hand hand-title" data-i18n="about_hand"></span>
+      <p data-i18n="about_p1"></p>
+      <div class="badges">
+        <span class="badge" data-i18n="badge1"></span>
+        <span class="badge" data-i18n="badge2"></span>
+        <span class="badge">🇩🇪 Deutsch · 🇬🇧 English · 🇫🇷 Français</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="regions">
+  <section class="panel" style="background-image:url('https://images.unsplash.com/photo-1503696967350-ad1874122058?auto=format&fit=crop&w=1800&q=80')">
+    <div class="panel-content">
+      <span class="hand-label" data-i18n="p1_hand"></span>
+      <h2 data-i18n="p1_title"></h2>
+      <p data-i18n="p1_desc"></p>
+    </div>
+  </section>
+
+  <section class="panel panel-blue">
+    <div class="panel-content">
+      <span class="hand-label" data-i18n="p2_hand"></span>
+      <h2 data-i18n="p2_title"></h2>
+      <p data-i18n="p2_desc"></p>
+    </div>
+  </section>
+
+  <section class="panel" style="background-image:url('https://images.unsplash.com/photo-1499002238440-d264edd596ec?auto=format&fit=crop&w=1800&q=80')">
+    <div class="panel-content">
+      <span class="hand-label" data-i18n="p3_hand"></span>
+      <h2 data-i18n="p3_title"></h2>
+      <p data-i18n="p3_desc"></p>
+    </div>
+  </section>
+</div>
+
+<section class="facts">
+  <div class="facts-grid">
+    <div class="fact"><div class="hand hand-num">3</div><p data-i18n="fact1"></p></div>
+    <div class="fact"><div class="hand hand-num" data-i18n="fact2_num"></div><p data-i18n="fact2"></p></div>
+    <div class="fact"><div class="hand hand-num" data-i18n="fact3_num"></div><p data-i18n="fact3"></p></div>
+    <div class="fact"><div class="hand hand-num" data-i18n="fact4_num"></div><p data-i18n="fact4"></p></div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="head"><span class="hand hand-title" data-i18n="rev_hand"></span></div>
+  <p class="sub" data-i18n="rev_sub"></p>
+  <div class="review-list" id="reviewList"></div>
+  <form class="review-form" id="reviewForm">
+    <h3 data-i18n="rev_form_title"></h3>
+    <label data-i18n="rev_l_rating"></label>
+    <div class="star-picker" id="starPicker">
+      <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+    </div>
+    <label for="revName" data-i18n="rev_l_name"></label>
+    <input type="text" id="revName" required>
+    <label for="revText" data-i18n="rev_l_text"></label>
+    <textarea id="revText" required></textarea>
+    <button type="submit" data-i18n="rev_btn"></button>
+    <p class="form-note" data-i18n="rev_note"></p>
+    <p class="thanks" id="thanksMsg" data-i18n="rev_thanks"></p>
+  </form>
+</section>
+
+<section id="contact">
+  <span class="hand hand-title" data-i18n="contact_hand"></span>
+  <p class="sub" data-i18n="contact_sub"></p>
+  <div class="contact-cards">
+    <div class="ccard">
+      <div class="icon">✉️</div>
+      <h3 data-i18n="c_email"></h3>
+      <a href="mailto:joerg.daiber@web.de">joerg.daiber@web.de</a>
+    </div>
+    <div class="ccard">
+      <div class="icon">📱</div>
+      <h3 data-i18n="c_mobile"></h3>
+      <a href="tel:+33631675341">+33 6 31 67 53 41</a>
+    </div>
+    <div class="ccard">
+      <div class="icon">☎️</div>
+      <h3 data-i18n="c_phone"></h3>
+      <a href="tel:+33493889923">+33 4 93 88 99 23</a>
+    </div>
+    <div class="ccard">
+      <div class="icon">📍</div>
+      <h3 data-i18n="c_loc"></h3>
+      <p data-i18n="c_loc_val"></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span data-i18n="footer"></span><br>
+  <span data-i18n="footer2"></span> <a href="https://www.guides-provence-cotedazur.com/www/guide-180.htm" target="_blank" rel="noopener">Fédération des Guides Interprètes P.A.C.A.</a>
+</footer>
+
+<script>
+const i18n = {
+  de: {
+    nav_about: "Über mich", nav_regions: "Regionen", nav_reviews: "Bewertungen", nav_contact: "Kontakt",
+    rev_hand: "Das sagen meine Gäste",
+    rev_sub: "Sie waren mit mir unterwegs? Ich freue mich über Ihre Bewertung!",
+    rev_form_title: "Ihre Bewertung",
+    rev_l_rating: "Ihre Sterne", rev_l_name: "Ihr Name", rev_l_text: "Ihre Erfahrung",
+    rev_btn: "Bewertung absenden",
+    rev_note: "Ihre Bewertung wird per E-Mail an Jörg gesendet und nach Prüfung veröffentlicht.",
+    rev_thanks: "Merci! Vielen Dank für Ihre Bewertung.",
+    hero_hand: "Bienvenue an der Côte d'Azur!",
+    hero_sub: "Lizenzierter Guide Conférencier in Nizza – Führungen auf Deutsch, Englisch und Französisch.",
+    hero_cta: "Kontakt aufnehmen",
+    about_hand: "Schön, dass Sie hier sind!",
+    about_caption: "Ihr Guide an der Côte d'Azur",
+    about_p1: "Ich bin Jörg Daiber, staatlich lizenzierter Guide Conférencier mit Sitz in Nizza und langjähriger Erfahrung. Ob Stadtführung, Tagesausflug oder mehrtägige Reisebegleitung durch ganz Frankreich – ich begleite Gruppen jeder Art und kümmere mich auch um Organisation und Logistik.",
+    badge1: "Lizenzierter Guide Conférencier",
+    badge2: "Mitglied der Fédération des Guides Interprètes P.A.C.A.",
+    p1_hand: "Mein Zuhause...",
+    p1_title: "Nizza, Monaco & Menton",
+    p1_desc: "Die Perlen der Riviera: das Vieux Nice mit seinen Märkten, die Promenade des Anglais, das Fürstentum Monaco und die Zitronenstadt Menton.",
+    p2_hand: "Glamour & azurblaues Meer...",
+    p2_title: "Cannes, Èze & Saint-Tropez",
+    p2_desc: "Von der Croisette über das Adlernest-Dorf Èze bis zu den Buchten von Saint-Tropez, Fréjus und Saint-Raphaël.",
+    p3_hand: "Lavendel & Lebenskunst...",
+    p3_title: "Provence: Marseille, Aix & Avignon",
+    p3_desc: "Auch jenseits der Küste zuhause: Marseille, Aix-en-Provence, der Papstpalast von Avignon – und auf Wunsch ganz Frankreich.",
+    fact1: "Sprachen: Deutsch, Englisch, Französisch",
+    fact2_num: "Viele", fact2: "Jahre Erfahrung als Guide und Reisebegleiter",
+    fact3_num: "Alle", fact3: "Gruppenarten – von Privatreisenden bis Kreuzfahrtgruppen",
+    fact4_num: "Ganz", fact4: "Frankreich als Einsatzgebiet – von Menton bis Arles und darüber hinaus",
+    contact_hand: "Schreiben Sie mir!",
+    contact_sub: "Für Anfragen, Termine und individuelle Angebote erreichen Sie mich per E-Mail oder Telefon.",
+    c_email: "E-Mail", c_mobile: "Mobil", c_phone: "Festnetz", c_loc: "Standort",
+    c_loc_val: "06000 Nizza, Frankreich",
+    footer: "© 2026 Jörg Daiber · Guide Conférencier · Nizza, Frankreich",
+    footer2: "Gelistet bei der"
+  },
+  en: {
+    nav_about: "About", nav_regions: "Regions", nav_reviews: "Reviews", nav_contact: "Contact",
+    rev_hand: "What my guests say",
+    rev_sub: "Been on a tour with me? I'd love to hear your feedback!",
+    rev_form_title: "Your review",
+    rev_l_rating: "Your stars", rev_l_name: "Your name", rev_l_text: "Your experience",
+    rev_btn: "Submit review",
+    rev_note: "Your review is sent to Jörg by email and published after approval.",
+    rev_thanks: "Merci! Thank you for your review.",
+    hero_hand: "Bienvenue on the French Riviera!",
+    hero_sub: "Licensed guide conférencier based in Nice – tours in English, German and French.",
+    hero_cta: "Get in touch",
+    about_hand: "Lovely to have you here!",
+    about_caption: "Your guide on the Côte d'Azur",
+    about_p1: "I'm Jörg Daiber, a state-licensed guide conférencier based in Nice with many years of experience. City walks, day trips or multi-day tours across France – I work with groups of every kind and also take care of organisation and logistics.",
+    badge1: "Licensed guide conférencier",
+    badge2: "Member of the Fédération des Guides Interprètes P.A.C.A.",
+    p1_hand: "My home turf...",
+    p1_title: "Nice, Monaco & Menton",
+    p1_desc: "The pearls of the Riviera: Vieux Nice and its markets, the Promenade des Anglais, the Principality of Monaco and lemon-scented Menton.",
+    p2_hand: "Glamour & azure sea...",
+    p2_title: "Cannes, Èze & Saint-Tropez",
+    p2_desc: "From the Croisette to the eagle's-nest village of Èze and on to the bays of Saint-Tropez, Fréjus and Saint-Raphaël.",
+    p3_hand: "Lavender & joie de vivre...",
+    p3_title: "Provence: Marseille, Aix & Avignon",
+    p3_desc: "At home beyond the coast too: Marseille, Aix-en-Provence, the Papal Palace of Avignon – and on request, all of France.",
+    fact1: "Languages: English, German, French",
+    fact2_num: "Many", fact2: "years of experience as guide and tour director",
+    fact3_num: "All", fact3: "kinds of groups – from private travellers to cruise parties",
+    fact4_num: "All of", fact4: "France as working area – from Menton to Arles and beyond",
+    contact_hand: "Drop me a line!",
+    contact_sub: "For enquiries, dates and tailor-made offers, reach me by email or phone.",
+    c_email: "Email", c_mobile: "Mobile", c_phone: "Landline", c_loc: "Location",
+    c_loc_val: "06000 Nice, France",
+    footer: "© 2026 Jörg Daiber · Guide conférencier · Nice, France",
+    footer2: "Listed with the"
+  },
+  fr: {
+    nav_about: "À propos", nav_regions: "Régions", nav_reviews: "Avis", nav_contact: "Contact",
+    rev_hand: "Ce que disent mes visiteurs",
+    rev_sub: "Vous avez fait une visite avec moi ? Votre avis me fait toujours plaisir !",
+    rev_form_title: "Votre avis",
+    rev_l_rating: "Vos étoiles", rev_l_name: "Votre nom", rev_l_text: "Votre expérience",
+    rev_btn: "Envoyer l'avis",
+    rev_note: "Votre avis est envoyé à Jörg par e-mail et publié après validation.",
+    rev_thanks: "Merci beaucoup pour votre avis !",
+    hero_hand: "Bienvenue sur la Côte d'Azur !",
+    hero_sub: "Guide conférencier diplômé basé à Nice – visites en français, allemand et anglais.",
+    hero_cta: "Me contacter",
+    about_hand: "Ravi de vous accueillir !",
+    about_caption: "Votre guide sur la Côte d'Azur",
+    about_p1: "Je suis Jörg Daiber, guide conférencier diplômé basé à Nice, avec de nombreuses années d'expérience. Visites guidées, excursions ou accompagnement de plusieurs jours dans toute la France – je travaille avec tous types de groupes et m'occupe aussi de l'organisation et de la logistique.",
+    badge1: "Guide conférencier diplômé",
+    badge2: "Membre de la Fédération des Guides Interprètes P.A.C.A.",
+    p1_hand: "Chez moi...",
+    p1_title: "Nice, Monaco & Menton",
+    p1_desc: "Les perles de la Riviera : le Vieux-Nice et ses marchés, la Promenade des Anglais, la Principauté de Monaco et Menton, la cité des citrons.",
+    p2_hand: "Glamour & mer azur...",
+    p2_title: "Cannes, Èze & Saint-Tropez",
+    p2_desc: "De la Croisette au village perché d'Èze, jusqu'aux baies de Saint-Tropez, Fréjus et Saint-Raphaël.",
+    p3_hand: "Lavande & art de vivre...",
+    p3_title: "Provence : Marseille, Aix & Avignon",
+    p3_desc: "Également au-delà de la côte : Marseille, Aix-en-Provence, le Palais des Papes d'Avignon – et sur demande, toute la France.",
+    fact1: "Langues : français, allemand, anglais",
+    fact2_num: "De longues", fact2: "années d'expérience comme guide et accompagnateur",
+    fact3_num: "Tous", fact3: "types de groupes – du voyageur individuel aux groupes de croisière",
+    fact4_num: "Toute", fact4: "la France comme terrain d'action – de Menton à Arles et au-delà",
+    contact_hand: "Écrivez-moi !",
+    contact_sub: "Pour toute demande, disponibilité ou offre sur mesure, contactez-moi par e-mail ou téléphone.",
+    c_email: "E-mail", c_mobile: "Portable", c_phone: "Fixe", c_loc: "Lieu",
+    c_loc_val: "06000 Nice, France",
+    footer: "© 2026 Jörg Daiber · Guide conférencier · Nice, France",
+    footer2: "Référencé auprès de la"
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (i18n[lang][key]) el.textContent = i18n[lang][key];
+  });
+  document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + lang).classList.add('active');
+  if (typeof renderReviews === 'function') renderReviews();
+}
+
+document.querySelectorAll('nav a').forEach(a =>
+  a.addEventListener('click', () => document.querySelector('nav').classList.remove('open')));
+window.addEventListener('scroll', () =>
+  document.getElementById('header').classList.toggle('solid', window.scrollY > 80));
+
+/* ---------- Bewertungen ---------- */
+const seedReviews = [
+  { stars: 5, text: { de: "Jörg kennt jede Ecke der Côte d'Azur und erzählt mit so viel Begeisterung – das Highlight unserer Reise!", en: "Jörg knows every corner of the Riviera and shares it with such enthusiasm – the highlight of our trip!", fr: "Jörg connaît chaque recoin de la Côte d'Azur et partage tout avec passion – le point fort de notre voyage !" }, who: "Familie M., Stuttgart" },
+  { stars: 5, text: { de: "Perfekt organisiert, herzlich und flexibel. Die Tagestour nach Monaco war unvergesslich.", en: "Perfectly organised, warm and flexible. The day trip to Monaco was unforgettable.", fr: "Organisation parfaite, chaleureux et flexible. L'excursion à Monaco était inoubliable." }, who: "Claudia & Peter, Wien" }
+];
+let currentLang = 'de';
+let pickedStars = 5;
+
+function renderReviews() {
+  const saved = JSON.parse(localStorage.getItem('jd_reviews') || '[]');
+  const list = document.getElementById('reviewList');
+  list.innerHTML = '';
+  seedReviews.forEach(r => list.appendChild(reviewCard(r.stars, r.text[currentLang] || r.text.de, r.who)));
+  saved.forEach(r => list.appendChild(reviewCard(r.stars, r.text, r.who)));
+}
+function reviewCard(stars, text, who) {
+  const d = document.createElement('div');
+  d.className = 'review';
+  const s = document.createElement('div'); s.className = 'stars';
+  s.textContent = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+  const p = document.createElement('p'); p.className = 'text'; p.textContent = '„' + text + '"';
+  const w = document.createElement('div'); w.className = 'who'; w.textContent = '— ' + who;
+  d.append(s, p, w);
+  return d;
+}
+function paintStars() {
+  document.querySelectorAll('#starPicker span').forEach(sp =>
+    sp.classList.toggle('on', +sp.dataset.v <= pickedStars));
+}
+document.querySelectorAll('#starPicker span').forEach(sp =>
+  sp.addEventListener('click', () => { pickedStars = +sp.dataset.v; paintStars(); }));
+paintStars();
+
+document.getElementById('reviewForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('revName').value.trim();
+  const text = document.getElementById('revText').value.trim();
+  if (!name || !text) return;
+  const saved = JSON.parse(localStorage.getItem('jd_reviews') || '[]');
+  saved.push({ stars: pickedStars, text, who: name });
+  localStorage.setItem('jd_reviews', JSON.stringify(saved));
+  renderReviews();
+  // Bewertung zusätzlich per E-Mail an Jörg senden
+  const subject = encodeURIComponent('Neue Bewertung von ' + name + ' (' + pickedStars + '/5 Sternen)');
+  const body = encodeURIComponent(text + '\n\n— ' + name);
+  window.location.href = 'mailto:joerg.daiber@web.de?subject=' + subject + '&body=' + body;
+  document.getElementById('thanksMsg').style.display = 'block';
+  e.target.reset(); pickedStars = 5; paintStars();
+});
+
+/* Initialisierung: Sprache setzen und Bewertungen rendern */
+const browserLang = (navigator.language || 'de').slice(0, 2);
+setLang(['de', 'en', 'fr'].includes(browserLang) ? browserLang : 'de');
+</script>
+
+</body>
+</html>
