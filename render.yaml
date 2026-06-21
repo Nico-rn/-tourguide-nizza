@@ -1,0 +1,19 @@
+# Render-Blueprint: macht aus dem Repo einen kostenlosen Docker-Webdienst.
+# Render baut das vorhandene Dockerfile, setzt automatisch die Umgebungs-
+# variable PORT (die server.js bereits über process.env.PORT liest) und
+# vergibt eine feste HTTPS-URL.
+#
+# Hinweis fürs Free-Tier:
+#  - Der Dienst "schläft" nach ~15 Min ohne Zugriff ein; der erste Aufruf
+#    danach dauert ~30-60 s (Cold Start). Für eine Demo völlig okay.
+#  - Kein persistenter Speicher: die SQLite-Datenbank wird bei jedem
+#    Neustart/Deploy zurückgesetzt. Der Kalender funktioniert normal, weil er
+#    beim Start ohnehin frisch von der Föderationsseite lädt.
+services:
+  - type: web
+    name: joerg-daiber-demo
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
