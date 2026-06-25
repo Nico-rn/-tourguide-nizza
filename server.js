@@ -160,10 +160,94 @@ function escapeHtml(str) {
     .replaceAll('"', '&quot;');
 }
 
+// ============================================================
+// SEO: drei getrennte Sprach-URLs (/de, /en, /fr)
+// ------------------------------------------------------------
+// Jede Sprache bekommt eine eigene Adresse mit eigenem <title>,
+// eigener Beschreibung und hreflang-Angaben. Erst dadurch kann
+// Google die englische, französische und deutsche Fassung
+// getrennt indexieren und der passenden Suche zuordnen.
+// ============================================================
+const LANGS = ['de', 'en', 'fr'];
+
+// Pro Sprache: Suchmaschinen-Titel + Beschreibung mit den
+// landesüblichen Suchbegriffen (z. B. "French Riviera" auf Englisch).
+const SEO = {
+  de: {
+    locale: 'de_DE',
+    title: "Jörg Daiber – Deutschsprachiger Reiseleiter & Guide an der Côte d'Azur | Nizza, Provence",
+    desc: "Lizenzierter deutschsprachiger Reiseleiter (Guide Conférencier) in Nizza. Stadtführungen und Ausflüge an der Côte d'Azur, in der Provence und in ganz Frankreich – auf Deutsch, Englisch und Französisch.",
+  },
+  en: {
+    locale: 'en_US',
+    title: "Jörg Daiber – English-Speaking Tour Guide on the French Riviera (Côte d'Azur), Nice & Provence",
+    desc: "Licensed tour guide (guide conférencier) based in Nice on the French Riviera (Côte d'Azur). Private city tours and day trips on the Riviera, in Provence and across France – guiding in English, German and French.",
+  },
+  fr: {
+    locale: 'fr_FR',
+    title: "Jörg Daiber – Guide Conférencier à Nice | Côte d'Azur, Provence & toute la France",
+    desc: "Guide conférencier diplômé basé à Nice. Visites guidées et excursions sur la Côte d'Azur, en Provence et dans toute la France – en français, allemand et anglais.",
+  },
+};
+
+function escapeAttr(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+// index.html einmal einlesen; daraus pro Sprache eine fertige Seite bauen.
+const INDEX_HTML = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+
+function pageForLang(lang) {
+  const seo = SEO[lang];
+  const altLinks = LANGS
+    .map((l) => `  <link rel="alternate" hreflang="${l}" href="${BASE_URL}/${l}">`)
+    .join('\n');
+  const head =
+    `\n  <link rel="canonical" href="${BASE_URL}/${lang}">\n` +
+    altLinks + '\n' +
+    `  <link rel="alternate" hreflang="x-default" href="${BASE_URL}/en">\n` +
+    `  <meta property="og:type" content="website">\n` +
+    `  <meta property="og:locale" content="${seo.locale}">\n` +
+    `  <meta property="og:title" content="${escapeAttr(seo.title)}">\n` +
+    `  <meta property="og:description" content="${escapeAttr(seo.desc)}">\n` +
+    `  <meta property="og:url" content="${BASE_URL}/${lang}">\n` +
+    `  <script>window.__LANG__ = ${JSON.stringify(lang)};</script>\n`;
+
+  return INDEX_HTML
+    .replace('<html lang="de">', `<html lang="${lang}">`)
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(seo.title)}</title>`)
+    .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${escapeAttr(seo.desc)}">`)
+    .replace('</head>', `${head}</head>`);
+}
+
+// Fertige Seiten beim Start vorbereiten (schnell + kein Datei-IO pro Request).
+const PAGES = Object.fromEntries(LANGS.map((l) => [l, pageForLang(l)]));
+
+// Beste Sprache aus dem Accept-Language-Header des Browsers ableiten.
+function bestLang(req) {
+  const h = String(req.headers['accept-language'] || '').toLowerCase();
+  for (const l of LANGS) if (h.includes(l)) return l;
+  return 'de';
+}
+
 // ---------- Webserver ----------
 const app = express();
 app.use(express.json());
-app.use(express.static('public')); // serviert index.html & Co. aus ./public
+
+// Sprachseiten MÜSSEN vor express.static stehen, sonst liefert static die
+// rohe index.html ohne Sprach-Metadaten aus.
+// "/" leitet je nach Browsersprache auf /de, /en oder /fr (302, temporär).
+app.get('/', (req, res) => res.redirect(302, '/' + bestLang(req)));
+app.get('/index.html', (req, res) => res.redirect(301, '/'));
+for (const l of LANGS) {
+  app.get('/' + l, (_req, res) => res.type('html').send(PAGES[l]));
+}
+
+app.use(express.static('public', { index: false })); // Bilder & Co.; index.html nicht direkt
 
 // GET /api/reviews -> alle freigegebenen Bewertungen (fuer die Website)
 app.get('/api/reviews', (req, res) => {
