@@ -262,7 +262,7 @@
       <div class="badges">
         <span class="badge" data-i18n="badge1"></span>
         <span class="badge" data-i18n="badge2"></span>
-        <span class="badge">🇩🇭 Deutsch · 🇬🇧 English · 🇫🇷 Français</span>
+        <span class="badge">🇩🇪 Deutsch · 🇬🇧 English · 🇫🇷 Français</span>
       </div>
     </div>
   </div>
@@ -505,7 +505,15 @@ const i18n = {
   }
 };
 
-function setLang(lang) {
+// Seitentitel pro Sprache (für geteilte Links & beim Umschalten).
+// Muss zu den Titeln in server.js (SEO) passen.
+const PAGE_TITLES = {
+  de: "Jörg Daiber – Deutschsprachiger Reiseleiter & Guide an der Côte d'Azur | Nizza, Provence",
+  en: "Jörg Daiber – English-Speaking Tour Guide on the French Riviera (Côte d'Azur), Nice & Provence",
+  fr: "Jörg Daiber – Guide Conférencier à Nice | Côte d'Azur, Provence & toute la France",
+};
+
+function setLang(lang, updateUrl = true) {
   currentLang = lang;
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -514,6 +522,13 @@ function setLang(lang) {
   });
   document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
   document.getElementById('btn-' + lang).classList.add('active');
+  if (PAGE_TITLES[lang]) document.title = PAGE_TITLES[lang];
+  // URL auf /de, /en bzw. /fr setzen, ohne die Seite neu zu laden.
+  // So ist jede Sprache verlinkbar und beim Neuladen liefert der Server
+  // die passenden Suchmaschinen-Daten.
+  if (updateUrl && window.history && history.pushState) {
+    history.pushState({ lang }, '', '/' + lang + location.hash);
+  }
   if (typeof renderReviews === 'function') renderReviews();
   if (typeof renderCalendar === 'function') renderCalendar();
 }
@@ -679,9 +694,18 @@ function renderCalendar() {
   if (next && d.nextPage) next.onclick = () => loadCalendar(d.nextPage);
 }
 
-/* Initialisierung: Sprache setzen, dann Bewertungen + Kalender vom Server laden */
-const browserLang = (navigator.language || 'de').slice(0, 2);
-setLang(['de', 'en', 'fr'].includes(browserLang) ? browserLang : 'de');
+/* Initialisierung: Sprache aus der URL bestimmen (vom Server gesetzt),
+   sonst aus dem Pfad, sonst aus der Browsersprache. */
+function initialLang() {
+  if (window.__LANG__ && ['de', 'en', 'fr'].includes(window.__LANG__)) return window.__LANG__;
+  const fromPath = location.pathname.replace(/\//g, '');
+  if (['de', 'en', 'fr'].includes(fromPath)) return fromPath;
+  const b = (navigator.language || 'de').slice(0, 2);
+  return ['de', 'en', 'fr'].includes(b) ? b : 'de';
+}
+setLang(initialLang(), false);
+// Vor-/Zurück-Knopf des Browsers berücksichtigen
+window.addEventListener('popstate', () => setLang(initialLang(), false));
 loadReviews();
 loadCalendar();
 </script>
